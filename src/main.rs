@@ -15,21 +15,35 @@ fn replace(dest: &str, src: &str, args: &Args) -> String {
 
     for file_line in dest.lines() {
         match ((file_line.contains(&args.start_marker), start_found), (file_line.contains(&args.end_marker), end_found)) {
-            ((false, false), _) => start.push_str(file_line),
-            ((true, false), _) => start_found = true,
+            ((false, false), _) => {
+                start.push_str(file_line);
+                start.push('\n');
+            },
+            ((true, false), _) => {
+                start_found = true;
+                start.push_str(file_line);
+                start.push('\n');
+            },
             ((_, true), (false, false)) => {}
-            ((_, true), (true, false)) => end_found = true,
-            ((_, true), (_, true)) => end.push_str(file_line),
+            ((_, true), (true, false)) => {
+                end_found = true;
+                end.push_str(file_line);
+                end.push('\n');
+            },
+            ((_, true), (_, true)) => {
+                end.push_str(file_line);
+                end.push('\n');
+            },
         }
     }
     
-    format!("{start}{src}{end}", start = start, src = src, end = end)
+    format!("{start}{src}\n{end}", start = start, src = src, end = end)
 }
 
 fn main() -> Result<(), Error> {
     let args = Args::parse_args()?;
     let src_body = read_to_string(&args.src)?;
-    let dst_body = read_to_string(&args.src)?;
+    let dst_body = read_to_string(&args.dest)?;
     let replacement = replace(&dst_body, &src_body, &args);
     write(&args.dest, replacement).map_err(Into::into)
 }
