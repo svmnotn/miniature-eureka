@@ -14,12 +14,12 @@ pub struct Args {
 impl Args {
     pub fn parse_args() -> Result<Self, lexopt::Error> {
         use lexopt::prelude::*;
-    
+
         let mut src = None;
         let mut dest = None;
         let mut start_marker = None;
         let mut end_marker = None;
-    
+
         let mut parser = lexopt::Parser::from_env();
         while let Some(arg) = parser.next()? {
             match arg {
@@ -48,7 +48,7 @@ impl Args {
                 _ => return Err(arg.unexpected()),
             }
         }
-    
+
         Ok(Args {
             src: src.ok_or("source file missing!")?,
             dest: dest.ok_or("destination file missing!")?,
