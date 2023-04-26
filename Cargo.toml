@@ -2,6 +2,13 @@
 name = "miniature-eureka"
 version = "0.1.0"
 edition = "2021"
+authors = ["Victor M. Suarez <svmnotn@gmail.com>"]
+rust-version = "1.69"
+license = "MIT"
+repository = "https://github.com/svmnotn/miniature-eureka/"
+readme = "README.md"
+description = "This tool finds two set strings in a file and replaces every line between them with the contents of another file."
+maintenance = { status = "passively-maintained" }
 
 [dependencies]
 lexopt = "0.3.0"
